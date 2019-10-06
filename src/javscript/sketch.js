@@ -1,5 +1,5 @@
 var cols, rows;
-var scl = 15;
+var scl;
 var w;
 var h;
 
@@ -17,7 +17,7 @@ let mic, fft;
 function setup() {
 
  
-
+  scl = 22;
 
   createCanvas(windowWidth, windowHeight, WEBGL);
 
@@ -64,20 +64,20 @@ function draw() {
 
   // TerrainControl.updateDisplay();
 
-  //console.log(TerrainControl.terrainColor)
+  //console.log(TerrainControl.terrainColor[0,1,2])
 
   // if ( TerrainControl.colorCycle == true) {
-  //   //tempColor = TerrainControl.terrainColor;
-  //   TerrainControl.terrainColor[0] = r;
-  //   TerrainControl.terrainColor[1] = g;
-  //   TerrainControl.terrainColor[2] = b;
+  //   //tempColor = TerrainControl.terrainColor[0,1,2];
+  //   TerrainControl.terrainColor[0,1,2][0] = r;
+  //   TerrainControl.terrainColor[0,1,2][1] = g;
+  //   TerrainControl.terrainColor[0,1,2][2] = b;
 
   //   // TerrainControl.updateDisplay();
 
   // } else {
-  //   TerrainControl.terrainColor[0] = tempColor[0];
-  //   TerrainControl.terrainColor[1] = tempColor[1];
-  //   TerrainControl.terrainColor[2] = tempColor[2];
+  //   TerrainControl.terrainColor[0,1,2][0] = tempColor[0];
+  //   TerrainControl.terrainColor[0,1,2][1] = tempColor[1];
+  //   TerrainControl.terrainColor[0,1,2][2] = tempColor[2];
   // }
 
 
@@ -102,17 +102,17 @@ function draw() {
 
 
 
-
+//console.log(TerrainControl.terrainColor)
 
   camera(0, -800, -400, 0, 0, 0, 0, 10, 0);
 
 
   //ambientLight(255, 255, 255 );
-  ambientLight(TerrainControl.terrainColor);
+  ambientLight(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2]);
 
   //directionalLight(000, 255, 255, 0, 100, -1);
 
-  pointLight(TerrainControl.terrainColor, 500, -970, 200);
+  pointLight(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2], 500, -970, 200);
 
 
   flying += TerrainControl.speed;
@@ -131,7 +131,7 @@ function draw() {
   translate((-w / 2) + 20, -h + 20);
   strokeWeight(1 / 2);
   stroke(10);
-  specularMaterial(TerrainControl.terrainColor);
+  specularMaterial(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2]);
 
   for (var y = 0; y < rows - 1; y++) {
     beginShape(TRIANGLE_STRIP);
@@ -152,7 +152,7 @@ function draw() {
 
   noStroke();
 
-  specularMaterial(TerrainControl.waterColor);
+  specularMaterial(TerrainControl.waterColor[0], TerrainControl.waterColor[1], TerrainControl.waterColor[2]);
   
 
   plane(w - 100, (windowHeight / 2) );
