@@ -28,9 +28,9 @@ console.log(canvas);
 let TerrainControl = {
   speed: .025,
   isReversed: false,
-  spikiness: 70,
+  spikiness: 80,
   erosion: 0.22,
-  waterlevel: 30,
+  waterlevel: 20,
   terrainColor:[99,119,125],
   waterColor: [78,115,128],
   // energy: energy.bass,
@@ -62,13 +62,13 @@ window.onload = function() {
 
   f1.add(TerrainControl, 'speed', .0015, .1);
   f1.add(TerrainControl, 'isReversed');
-  f1.add(TerrainControl, 'spikiness', 20, 120);
+  f1.add(TerrainControl, 'spikiness', 10, 120);
   f1.add(TerrainControl, 'erosion', .05, .30);
   f1.addColor(TerrainControl, 'terrainColor').listen();
   f1.add(TerrainControl, 'terrainColorCycle');
   f1.open();
 
-  f2.add(TerrainControl, 'waterlevel', 20, 80);
+  f2.add(TerrainControl, 'waterlevel', 20, 100);
   f2.addColor(TerrainControl, 'waterColor').listen();
   f2.add(TerrainControl, 'waterColorCycle');
   f2.open();

@@ -3,7 +3,7 @@ var scl;
 var w;
 var h;
 
-// var camZoom;
+let listening;
 
 var flying = 0;
 
@@ -22,11 +22,12 @@ let r=255,g=0,b=0;
 
 let spectrum, energy;
 
-const firstColor = TerrainControl.terrainColor;
 
 function setup() {
 
-  scl = 25;
+
+
+  scl = 20;
 
   createCanvas(windowWidth, windowHeight, WEBGL);
 
@@ -39,10 +40,12 @@ function setup() {
 
   mic = new p5.AudioIn();
   // // By default, it does not .connect() (to the computer speakers)
-  // mic.stop();
+
 
   fft = new p5.FFT();
   fft.setInput(mic);
+
+  mic.stop();
 
 
   for (var x = 0; x < cols; x++) {
@@ -83,9 +86,11 @@ function mouseWheel(event) {
   zoom += sensativity * event.delta;
   zoom = constrain(zoom, zoomMin, zoomMax);
   //uncomment to block page scrolling
-  console.log(zoom)
+ 
   return false;
 }
+
+
 
 
 
@@ -93,20 +98,32 @@ function mouseWheel(event) {
 function draw() {
 
   if(TerrainControl.micIn === true) {
-    
-
     mic.start();
-
-  
-
   } else {
   
-    TerrainControl.micIn = false;
-    // console.log(TerrainControl.micIn)
+    mic.stop();
+    
+    
+  }
+
+  // if(TerrainControl.micIn === true && mic.enabled) {
+    
+  //   mic.start();
+
+  //   TerrainControl.micIn = true;
+
+  
+
+  // } else {
+
+  //   mic.stop();
+  
+  //   TerrainControl.micIn = false;
+  //   // console.log(TerrainControl.micIn)
    
     
   
-  }
+  // }
 
   if (TerrainControl.terrainColorCycle == true) {
 
@@ -140,7 +157,7 @@ function draw() {
 
 
   background(20);
-  camera(0, zoom, -400, 0, 0, 0, 0, 10, 0);
+  camera(0, zoom, -300, 0, 0, 0, 0, 10, 0);
   ambientLight(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2]);
   pointLight(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2], 500, -970, 200);
 
@@ -150,7 +167,7 @@ function draw() {
   for (var y = 0; y < rows; y++) {
     var xoff = 0;
     for (var x = 0; x < cols; x++) {
-      terrain[x][y] = map(noise(xoff, yoff), 0, 1, 0, energy + spectrum[x + y] + TerrainControl.spikiness );
+      terrain[x][y] = map(noise(xoff, yoff), 0, 1, 0, energy + spectrum[x + y] + TerrainControl.spikiness / 2 );
       xoff += TerrainControl.erosion;
     }
     if (TerrainControl.isReversed == true) {
@@ -162,7 +179,7 @@ function draw() {
 
 
   rotateX(PI / 3);
-  translate((-w / 2) + 20, -h + 20);
+  translate((-w / 2), -h - 40);
   strokeWeight(1 / 2);
   stroke(10);
   specularMaterial(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2]);
@@ -178,18 +195,14 @@ function draw() {
   }
 
 
-
-
-
-  //   translate(0, -50);
-  translate((w / 2), (h / 2) - 20, TerrainControl.waterlevel);
+  translate((w / 2), (h / 2), TerrainControl.waterlevel);
 
   noStroke();
 
   specularMaterial(TerrainControl.waterColor[0], TerrainControl.waterColor[1], TerrainControl.waterColor[2]);
   
 
-  plane(w - 100, (windowHeight / 2) - 100 );
+  plane(w - 100, (windowHeight / 2) - 40 );
 
 
 
