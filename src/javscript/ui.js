@@ -26,7 +26,6 @@ canvas.style.zIndex = '40';
 console.log(canvas);
 
 let TerrainControl = {
-  peaks: 20,
   speed: .025,
   spikiness: 80,
   erosion: 0.22,
@@ -41,37 +40,13 @@ let TerrainControl = {
  
 };
 
-let r=255,g=0,b=0;
 
-function colorCycle() {
-  if(r > 0 && b == 0){
-    r--;
-    g++;
-  }
-  if(g > 0 && r == 0){
-    g--;
-    b++;
-  }
-  if(b > 0 && g == 0){
-    r++;
-    b--;
-  }
-}
 
 var updateGUI = function() {
 
-  requestAnimationFrame(updateGUI);
-
-  if (TerrainControl.terrainColorCycle == true) {
-    TerrainControl.terrainColor = [r,g,b];
-  }
-
-  if (TerrainControl.waterColorCycle == true) {
-    TerrainControl.waterColor = [g,r,b];
-  }
   
-
-  // Iterate over all controllers
+  requestAnimationFrame(updateGUI);
+  
   
 
 };
@@ -83,7 +58,6 @@ window.onload = function() {
   let f3 = gui.addFolder('Sound');
   // let f2 = gui.addFolder('');
 
-  f1.add(TerrainControl, 'peaks', 15, 25);
   f1.add(TerrainControl, 'speed', .0015, .1);
   f1.add(TerrainControl, 'spikiness', 20, 200);
   f1.add(TerrainControl, 'erosion', .05, .30);

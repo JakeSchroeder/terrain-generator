@@ -3,7 +3,7 @@ var scl;
 var w;
 var h;
 
-var camZoom;
+// var camZoom;
 
 var flying = 0;
 
@@ -13,11 +13,20 @@ var analyzer;
 
 let mic, fft;
 
+var zoom = -450;
+var zoomMin = -900;
+var zoomMax = -410;
+var sensativity = 0.15;
+
+let r=255,g=0,b=0;
+
+const firstColor = TerrainControl.terrainColor;
 
 function setup() {
 
- 
-  scl = 22;
+
+ console.log(firstColor);
+  scl = 30;
 
   createCanvas(windowWidth, windowHeight, WEBGL);
 
@@ -47,10 +56,34 @@ function setup() {
 
 }
 
+function colorCycle() {
+  if(r > 0 && b == 0){
+    r--;
+    g++;
+  }
+  if(g > 0 && r == 0){
+    g--;
+    b++;
+  }
+  if(b > 0 && g == 0){
+    r++;
+    b--;
+  }
+}
+
 function windowResized() {
 
   resizeCanvas(windowWidth, windowHeight);
 
+}
+
+function mouseWheel(event) {
+
+  zoom += sensativity * event.delta;
+  zoom = constrain(zoom, zoomMin, zoomMax);
+  //uncomment to block page scrolling
+  console.log(zoom)
+  return false;
 }
 
 
@@ -59,59 +92,33 @@ function windowResized() {
 function draw() {
 
 
-  colorCycle();
-  updateGUI();
 
-  // TerrainControl.updateDisplay();
+  if (TerrainControl.terrainColorCycle == true) {
+    
+    colorCycle();
+    TerrainControl.terrainColor[0] = r;
+    TerrainControl.terrainColor[1] = g;
+    TerrainControl.terrainColor[2] = b;
+    updateGUI();
+  
+  } if (TerrainControl.waterColorCycle == true) {
+   
+    colorCycle();
+    TerrainControl.waterColor[0] = g;
+    TerrainControl.waterColor[1] = b;
+    TerrainControl.waterColor[2] = r;
+    updateGUI();
+  }
+  
 
-  //console.log(TerrainControl.terrainColor[0,1,2])
-
-  // if ( TerrainControl.colorCycle == true) {
-  //   //tempColor = TerrainControl.terrainColor[0,1,2];
-  //   TerrainControl.terrainColor[0,1,2][0] = r;
-  //   TerrainControl.terrainColor[0,1,2][1] = g;
-  //   TerrainControl.terrainColor[0,1,2][2] = b;
-
-  //   // TerrainControl.updateDisplay();
-
-  // } else {
-  //   TerrainControl.terrainColor[0,1,2][0] = tempColor[0];
-  //   TerrainControl.terrainColor[0,1,2][1] = tempColor[1];
-  //   TerrainControl.terrainColor[0,1,2][2] = tempColor[2];
-  // }
-
-
-
-  fft.smooth();
   let spectrum = fft.analyze(); 
   let energy = fft.getEnergy(TerrainControl.energy);
 
 
-//console.log(TerrainControl.energy)
-  
-  // let waveform = fft.waveform();
-  
-  // let averages = fft.linAverages();
-
-
-
-  background(10);
-
-  let locX = mouseX - height / 2;
-  let locY = mouseY - width / 2;
-
-
-
-//console.log(TerrainControl.terrainColor)
-
-  camera(0, -800, -400, 0, 0, 0, 0, 10, 0);
-
-
-  //ambientLight(255, 255, 255 );
+  background(20);
+  scale(zoom);
+  camera(0, zoom, -400, 0, 0, 0, 0, 10, 0);
   ambientLight(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2]);
-
-  //directionalLight(000, 255, 255, 0, 100, -1);
-
   pointLight(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2], 500, -970, 200);
 
 
