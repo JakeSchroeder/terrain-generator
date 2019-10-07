@@ -27,13 +27,15 @@ console.log(canvas);
 
 let TerrainControl = {
   speed: .025,
-  spikiness: 80,
+  isReversed: false,
+  spikiness: 70,
   erosion: 0.22,
   waterlevel: 30,
   terrainColor:[99,119,125],
   waterColor: [78,115,128],
   // energy: energy.bass,
   energy: 'bass',
+  micIn: false,
   terrainColorCycle: false,
   waterColorCycle: false
   // colorCycle = () => { return terrainColor[Math.random(), 200, Math.random()] }
@@ -59,7 +61,8 @@ window.onload = function() {
   // let f2 = gui.addFolder('');
 
   f1.add(TerrainControl, 'speed', .0015, .1);
-  f1.add(TerrainControl, 'spikiness', 20, 200);
+  f1.add(TerrainControl, 'isReversed');
+  f1.add(TerrainControl, 'spikiness', 20, 120);
   f1.add(TerrainControl, 'erosion', .05, .30);
   f1.addColor(TerrainControl, 'terrainColor').listen();
   f1.add(TerrainControl, 'terrainColorCycle');
@@ -72,6 +75,7 @@ window.onload = function() {
 
   // f3.add(TerrainControl, 'energy', {bass: 10, mid: 125, trebel: 300});
   f3.add(TerrainControl, 'energy', { bass: 'bass', mid: 'mid', trebel: 'treble' } );
+  f3.add(TerrainControl, 'micIn');
   f3.open();
 
 

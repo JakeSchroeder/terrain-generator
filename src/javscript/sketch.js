@@ -14,19 +14,19 @@ var analyzer;
 let mic, fft;
 
 var zoom = -450;
-var zoomMin = -900;
+var zoomMin = -1100;
 var zoomMax = -410;
 var sensativity = 0.15;
 
 let r=255,g=0,b=0;
 
+let spectrum, energy;
+
 const firstColor = TerrainControl.terrainColor;
 
 function setup() {
 
-
- console.log(firstColor);
-  scl = 30;
+  scl = 25;
 
   createCanvas(windowWidth, windowHeight, WEBGL);
 
@@ -38,11 +38,12 @@ function setup() {
   rows = h / scl;
 
   mic = new p5.AudioIn();
+  // // By default, it does not .connect() (to the computer speakers)
+  // mic.stop();
 
-  // By default, it does not .connect() (to the computer speakers)
-  mic.start();
   fft = new p5.FFT();
   fft.setInput(mic);
+
 
   for (var x = 0; x < cols; x++) {
     terrain[x] = [];
@@ -91,32 +92,54 @@ function mouseWheel(event) {
 
 function draw() {
 
+  if(TerrainControl.micIn === true) {
+    
 
+    mic.start();
+
+  
+
+  } else {
+  
+    TerrainControl.micIn = false;
+    // console.log(TerrainControl.micIn)
+   
+    
+  
+  }
 
   if (TerrainControl.terrainColorCycle == true) {
-    
+
     colorCycle();
     TerrainControl.terrainColor[0] = r;
     TerrainControl.terrainColor[1] = g;
     TerrainControl.terrainColor[2] = b;
     updateGUI();
   
-  } if (TerrainControl.waterColorCycle == true) {
+  } else {
+
+
+
+
+  } 
+  
+  if (TerrainControl.waterColorCycle == true) {
    
     colorCycle();
     TerrainControl.waterColor[0] = g;
     TerrainControl.waterColor[1] = b;
     TerrainControl.waterColor[2] = r;
     updateGUI();
-  }
-  
+  } 
 
-  let spectrum = fft.analyze(); 
-  let energy = fft.getEnergy(TerrainControl.energy);
+
+  
+  spectrum = fft.analyze(); 
+  energy = fft.getEnergy(TerrainControl.energy);
+  
 
 
   background(20);
-  scale(zoom);
   camera(0, zoom, -400, 0, 0, 0, 0, 10, 0);
   ambientLight(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2]);
   pointLight(TerrainControl.terrainColor[0], TerrainControl.terrainColor[1], TerrainControl.terrainColor[2], 500, -970, 200);
@@ -130,7 +153,11 @@ function draw() {
       terrain[x][y] = map(noise(xoff, yoff), 0, 1, 0, energy + spectrum[x + y] + TerrainControl.spikiness );
       xoff += TerrainControl.erosion;
     }
-    yoff += 0.15; //speed
+    if (TerrainControl.isReversed == true) {
+      yoff -= 0.15; //speed
+    } else {
+      yoff += 0.15;
+    }
   }
 
 
@@ -155,14 +182,14 @@ function draw() {
 
 
   //   translate(0, -50);
-  translate((w / 2), (h / 2) - 50, TerrainControl.waterlevel);
+  translate((w / 2), (h / 2) - 20, TerrainControl.waterlevel);
 
   noStroke();
 
   specularMaterial(TerrainControl.waterColor[0], TerrainControl.waterColor[1], TerrainControl.waterColor[2]);
   
 
-  plane(w - 100, (windowHeight / 2) );
+  plane(w - 100, (windowHeight / 2) - 100 );
 
 
 
