@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "browser-sync start --server -f -w"
-  
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {},
   "dependencies": {
+    "browser-sync": "^2.26.7",
     "dat.gui": "^0.7.6",
     "p5": "^0.9.0",
     "stats.js": "^0.17.0"

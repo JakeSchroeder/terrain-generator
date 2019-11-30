@@ -26,6 +26,7 @@ canvas.style.zIndex = '40';
 console.log(canvas);
 
 let TerrainControl = {
+  startstop: false,
   speed: .025,
   isReversed: false,
   spikiness: 80,
@@ -35,7 +36,7 @@ let TerrainControl = {
   waterColor: [78,115,128],
   // energy: energy.bass,
   energy: 'bass',
-  micIn: false,
+  // micIn: false,
   terrainColorCycle: false,
   waterColorCycle: false
   // colorCycle = () => { return terrainColor[Math.random(), 200, Math.random()] }
@@ -55,12 +56,17 @@ var updateGUI = function() {
 
 window.onload = function() {
   gui = new dat.GUI({name: 'Terrain Controller'});
+  let sound = gui.addFolder('SoundControl');
   let f1 = gui.addFolder('Terrain');
   let f2 = gui.addFolder('Water');
   let f3 = gui.addFolder('Sound');
   // let f2 = gui.addFolder('');
 
-  f1.add(TerrainControl, 'speed', .0015, .1);
+
+  sound.add(TerrainControl, 'startstop');
+  sound.open();
+  
+  f1.add(TerrainControl, 'speed', 0, .1);
   f1.add(TerrainControl, 'isReversed');
   f1.add(TerrainControl, 'spikiness', 10, 120);
   f1.add(TerrainControl, 'erosion', .05, .30);
@@ -75,7 +81,7 @@ window.onload = function() {
 
   // f3.add(TerrainControl, 'energy', {bass: 10, mid: 125, trebel: 300});
   f3.add(TerrainControl, 'energy', { bass: 'bass', mid: 'mid', trebel: 'treble' } );
-  f3.add(TerrainControl, 'micIn');
+  // f3.add(TerrainControl, 'micIn');
   f3.open();
 
 

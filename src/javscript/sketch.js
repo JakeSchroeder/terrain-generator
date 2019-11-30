@@ -22,15 +22,23 @@ let r=255,g=0,b=0;
 
 let spectrum, energy;
 
+let song;
+
+function preload() {
+  song = loadSound('./src/assets/mp3/timestretch.mp3');
+}
+
+
 
 function setup() {
 
-
+  song.play()
 
   scl = 20;
 
   createCanvas(windowWidth, windowHeight, WEBGL);
 
+  
 
   w = width / 2;
   h = height / 2;
@@ -38,14 +46,11 @@ function setup() {
   cols = w / scl;
   rows = h / scl;
 
-  mic = new p5.AudioIn();
   // // By default, it does not .connect() (to the computer speakers)
 
 
   fft = new p5.FFT();
-  fft.setInput(mic);
-
-  mic.stop();
+  song.amp(.2);
 
 
   for (var x = 0; x < cols; x++) {
@@ -54,11 +59,7 @@ function setup() {
       terrain[x][y] = 0; //specify a default value for now
     }
   }
-
-
-
-
-}
+} //end setup function
 
 function colorCycle() {
   if(r > 0 && b == 0){
@@ -90,40 +91,8 @@ function mouseWheel(event) {
   return false;
 }
 
-
-
-
-
-
 function draw() {
 
-  if(TerrainControl.micIn === true) {
-    mic.start();
-  } else {
-  
-    mic.stop();
-    
-    
-  }
-
-  // if(TerrainControl.micIn === true && mic.enabled) {
-    
-  //   mic.start();
-
-  //   TerrainControl.micIn = true;
-
-  
-
-  // } else {
-
-  //   mic.stop();
-  
-  //   TerrainControl.micIn = false;
-  //   // console.log(TerrainControl.micIn)
-   
-    
-  
-  // }
 
   if (TerrainControl.terrainColorCycle == true) {
 
@@ -133,11 +102,6 @@ function draw() {
     TerrainControl.terrainColor[2] = b;
     updateGUI();
   
-  } else {
-
-
-
-
   } 
   
   if (TerrainControl.waterColorCycle == true) {
